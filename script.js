@@ -15,22 +15,81 @@ const loginMessage = document.getElementById('loginMessage');
 const pageTitle = document.getElementById('pageTitle');
 const contentArea = document.getElementById('contentArea');
 const logoutBtn = document.getElementById('logoutBtn');
+const flowerBackground = document.querySelector('.flower-background');
+const densityButtons = document.querySelectorAll('.density-btn');
 
-// Create floating hearts
-function createFloatingHearts() {
-    const heartsContainer = document.createElement('div');
-    heartsContainer.className = 'floating-hearts';
-    document.body.appendChild(heartsContainer);
-
-    const hearts = ['💖', '🌸', '🌺', '💐', '🌷', '🌹', '🥀', '🌼'];
+// Flower density control
+function setupFlowerControls() {
+    densityButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            densityButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Get density level
+            const density = this.getAttribute('data-density');
+            
+            // Remove all density classes
+            flowerBackground.classList.remove(
+                'flower-density-minimal',
+                'flower-density-light', 
+                'flower-density-medium',
+                'flower-density-lush'
+            );
+            
+            // Add selected density class
+            flowerBackground.classList.add(`flower-density-${density}`);
+            
+            // Save preference to localStorage
+            localStorage.setItem('flowerDensity', density);
+        });
+    });
     
-    for (let i = 0; i < 8; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-        heart.style.left = Math.random() * 100 + '%';
-        heart.style.animationDelay = Math.random() * 8 + 's';
-        heartsContainer.appendChild(heart);
+    // Load saved density preference
+    const savedDensity = localStorage.getItem('flowerDensity') || 'lush'; // Default to lush now
+    const savedButton = document.querySelector(`[data-density="${savedDensity}"]`);
+    if (savedButton) {
+        savedButton.click();
+    }
+}
+
+// Create abundant floating flowers
+function createFloatingFlowers() {
+    const flowersContainer = document.createElement('div');
+    flowersContainer.className = 'floating-flowers';
+    document.body.appendChild(flowersContainer);
+
+    const flowers = ['🌸', '🌺', '💮', '🏵️', '🌻', '🌼', '🌷', '🌹', '🥀', '💐', '🪷', '🪻'];
+    
+    // Create 30 flowers instead of 8
+    for (let i = 0; i < 30; i++) {
+        const flower = document.createElement('div');
+        flower.className = 'flower';
+        flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+        flower.style.left = Math.random() * 100 + '%';
+        flower.style.animationDelay = Math.random() * 30 + 's';
+        flower.style.fontSize = (20 + Math.random() * 12) + 'px';
+        flowersContainer.appendChild(flower);
+    }
+}
+
+// Create floating leaves
+function createFloatingLeaves() {
+    const leavesContainer = document.createElement('div');
+    leavesContainer.className = 'floating-leaves';
+    document.body.appendChild(leavesContainer);
+
+    const leaves = ['🌿', '🍃', '🍂', '🍁', '🎋'];
+    
+    // Create 10 leaves
+    for (let i = 0; i < 10; i++) {
+        const leaf = document.createElement('div');
+        leaf.className = 'leaf';
+        leaf.textContent = leaves[Math.floor(Math.random() * leaves.length)];
+        leaf.style.left = Math.random() * 100 + '%';
+        leaf.style.animationDelay = Math.random() * 12 + 's';
+        leavesContainer.appendChild(leaf);
     }
 }
 
@@ -194,7 +253,9 @@ function startMessageRefresh() {
 
 // Initialize the app
 function init() {
-    createFloatingHearts();
+    setupFlowerControls();
+    createFloatingFlowers();
+    createFloatingLeaves();
     checkExistingLogin();
     startMessageRefresh();
 }
