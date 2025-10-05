@@ -4,7 +4,7 @@
 
 // REPLACE THESE WITH YOUR ACTUAL VALUES:
 const JSONBIN_API_KEY = '$2a$10$dw5t4xCTlK2qd021U4REyOXvKb7XGGT38BEDOlAdluAmIkY0QNhVy'; // Get from jsonbin.io dashboard
-const JSONBIN_BIN_ID = '68e1eee280b27952c6e752ee'; // We'll create this first
+const JSONBIN_BIN_ID = '68e1f3cdd0ea881f4095aeca'; // We'll create this first
 
 // =============================================
 // CORE APPLICATION CODE
