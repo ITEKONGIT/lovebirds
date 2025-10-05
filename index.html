@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Secret Garden</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Chrysanthemum Background -->
+    <div class="flower-background"></div>
+    
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen active">
+        <div class="container">
+            <div class="header-decoration">
+                <div class="flower-icon">🌸</div>
+                <h2>Our Secret Garden</h2>
+                <div class="flower-icon">🌸</div>
+            </div>
+            <form id="loginForm">
+                <input type="text" id="username" placeholder="Your beautiful name" required>
+                <input type="password" id="password" placeholder="Our secret code" required>
+                <button type="submit">Enter Our Garden</button>
+            </form>
+            <div id="loginMessage" class="message"></div>
+            <div class="hint">
+                <small>🌸 Boyfriend: lover1 / password1 🌸<br>🌿 Girlfriend: lover2 / password2 🌿</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Screen -->
+    <div id="appScreen" class="screen">
+        <div class="container">
+            <header>
+                <div class="header-decoration">
+                    <div class="flower-icon">🌿</div>
+                    <h2 id="pageTitle">Our Love Blossoms</h2>
+                    <div class="flower-icon">🌸</div>
+                </div>
+            </header>
+            
+            <main id="contentArea" class="content-area">
+                <!-- Content will be loaded here -->
+            </main>
+            
+            <footer>
+                <button id="logoutBtn" class="logout-button">
+                    <span class="button-icon">🌙</span>
+                    Leave Our Garden
+                </button>
+            </footer>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
