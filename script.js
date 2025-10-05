@@ -5,7 +5,7 @@ const users = {
 };
 
 // Message storage
-let currentMessage = localStorage.getItem('loveMessage') || 'My love, my heart blossoms for you like eternal chrysanthemums... 🌸';
+let currentMessage = localStorage.getItem('loveMessage') || 'My love, my heart blossoms for you like eternal chrysanthemums... Every moment with you feels like walking through our secret garden, where each flower represents a beautiful memory we\'ve created together. Your smile is the sunshine that helps our love grow, and your laughter is the sweetest melody in our garden of affection. 🌸💖';
 
 // DOM Elements
 const loginScreen = document.getElementById('loginScreen');
@@ -15,46 +15,8 @@ const loginMessage = document.getElementById('loginMessage');
 const pageTitle = document.getElementById('pageTitle');
 const contentArea = document.getElementById('contentArea');
 const logoutBtn = document.getElementById('logoutBtn');
-const flowerBackground = document.querySelector('.flower-background');
-const densityButtons = document.querySelectorAll('.density-btn');
 
-// Flower density control
-function setupFlowerControls() {
-    densityButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Remove active class from all buttons
-            densityButtons.forEach(btn => btn.classList.remove('active'));
-            // Add active class to clicked button
-            this.classList.add('active');
-            
-            // Get density level
-            const density = this.getAttribute('data-density');
-            
-            // Remove all density classes
-            flowerBackground.classList.remove(
-                'flower-density-minimal',
-                'flower-density-light', 
-                'flower-density-medium',
-                'flower-density-lush'
-            );
-            
-            // Add selected density class
-            flowerBackground.classList.add(`flower-density-${density}`);
-            
-            // Save preference to localStorage
-            localStorage.setItem('flowerDensity', density);
-        });
-    });
-    
-    // Load saved density preference
-    const savedDensity = localStorage.getItem('flowerDensity') || 'lush'; // Default to lush now
-    const savedButton = document.querySelector(`[data-density="${savedDensity}"]`);
-    if (savedButton) {
-        savedButton.click();
-    }
-}
-
-// Create abundant floating flowers
+// Create floating flowers - ALWAYS PLENTY
 function createFloatingFlowers() {
     const flowersContainer = document.createElement('div');
     flowersContainer.className = 'floating-flowers';
@@ -62,8 +24,7 @@ function createFloatingFlowers() {
 
     const flowers = ['🌸', '🌺', '💮', '🏵️', '🌻', '🌼', '🌷', '🌹', '🥀', '💐', '🪷', '🪻'];
     
-    // Create 30 flowers instead of 8
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 15; i++) {
         const flower = document.createElement('div');
         flower.className = 'flower';
         flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
@@ -82,14 +43,49 @@ function createFloatingLeaves() {
 
     const leaves = ['🌿', '🍃', '🍂', '🍁', '🎋'];
     
-    // Create 10 leaves
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 6; i++) {
         const leaf = document.createElement('div');
         leaf.className = 'leaf';
         leaf.textContent = leaves[Math.floor(Math.random() * leaves.length)];
         leaf.style.left = Math.random() * 100 + '%';
         leaf.style.animationDelay = Math.random() * 12 + 's';
         leavesContainer.appendChild(leaf);
+    }
+}
+
+// Scroll functionality
+function setupScroll() {
+    const scroll = document.querySelector('.scroll-container');
+    const clasp = document.querySelector('.clasp');
+    
+    if (scroll && clasp) {
+        clasp.addEventListener('click', () => {
+            scroll.classList.toggle('open');
+        });
+    }
+}
+
+// Character counter for boyfriend
+function setupCharacterCounter() {
+    const textarea = document.getElementById('romanticMessage');
+    const charCounter = document.querySelector('.char-counter');
+    
+    if (textarea && charCounter) {
+        textarea.addEventListener('input', function() {
+            const length = this.value.length;
+            charCounter.textContent = `${length}/2000 characters`;
+            
+            if (length > 1800) {
+                charCounter.style.color = '#ff6b6b';
+            } else if (length > 1500) {
+                charCounter.style.color = '#ffa500';
+            } else {
+                charCounter.style.color = '#88c9a1';
+            }
+        });
+        
+        // Initialize counter
+        charCounter.textContent = `${textarea.value.length}/2000 characters`;
     }
 }
 
@@ -111,13 +107,11 @@ loginForm.addEventListener('submit', function(event) {
         loginMessage.textContent = '🌸 Our hearts blossom together! 🌸';
         loginMessage.className = 'message success';
         
-        // Store current user
         localStorage.setItem('currentUser', JSON.stringify({
             username: username,
             role: users[username].role
         }));
         
-        // Show main app after delay
         setTimeout(() => {
             loadAppScreen();
         }, 1000);
@@ -148,33 +142,46 @@ function loadAppScreen() {
     }
 }
 
-// Boyfriend view (can edit messages)
+// Boyfriend view (IMPROVED for long texts)
 function loadBoyfriendView() {
     pageTitle.textContent = 'Write to My Blossom 💌';
     
     contentArea.innerHTML = `
         <div class="message-editor">
-            <textarea id="romanticMessage" rows="6" placeholder="Let your heart bloom with words...">${currentMessage}</textarea>
+            <div class="char-counter">${currentMessage.length}/2000 characters</div>
+            <textarea id="romanticMessage" placeholder="Pour your heart out... write as much as you want!">${currentMessage}</textarea>
             <button id="saveBtn" class="save-button">
                 <span class="button-icon">🌸</span>
-                Plant These Words in Our Garden
+                Send to My Love
             </button>
         </div>
     `;
     
     document.getElementById('saveBtn').addEventListener('click', saveMessage);
+    setupCharacterCounter();
 }
 
-// Girlfriend view (read-only)
+// Girlfriend view (FIXED - no static signature)
 function loadGirlfriendView() {
-    pageTitle.textContent = 'My Love\'s Blossoms 📖';
+    pageTitle.textContent = 'My Love\'s Message 📖';
     
     contentArea.innerHTML = `
-        <div class="message-display">
-            <p>"${currentMessage}"</p>
-            <small>~ Your Beloved Gardener</small>
+        <div class="scroll-container" id="loveScroll">
+            <div class="rod top"></div>
+            <div class="clasp" id="scrollClasp"></div>
+            <div class="scroll-text">
+                ${currentMessage.split('\n').map(paragraph => 
+                    paragraph.trim() ? `<p style="margin-bottom: 1rem; line-height: 1.6;">${paragraph}</p>` : ''
+                ).join('')}
+            </div>
+            <div class="rod bottom"></div>
         </div>
     `;
+    
+    // Setup scroll functionality
+    setTimeout(() => {
+        setupScroll();
+    }, 100);
 }
 
 // Save message functionality
@@ -182,29 +189,29 @@ function saveMessage() {
     const newMessage = document.getElementById('romanticMessage').value.trim();
     
     if (!newMessage) {
-        showMessage('🌸 Please let your heart bloom with words! 🌸', 'error');
+        showMessage('🌸 Please write something from your heart! 🌸', 'error');
         return;
     }
     
-    if (newMessage.length > 1000) {
-        showMessage('🌿 Your garden of words is too vast! 🌿', 'error');
+    if (newMessage.length > 2000) {
+        showMessage('🌿 Your message is a bit too long (max 2000 characters) 🌿', 'error');
         return;
     }
     
     currentMessage = newMessage;
     localStorage.setItem('loveMessage', newMessage);
     
-    showMessage('🌸 Planted in our garden! Your love will see this bloom soon. 🌸', 'success');
+    showMessage('🌸 Message sent! Your love will see it soon. 🌸', 'success');
     
-    // Update display
+    // Show preview
     setTimeout(() => {
         contentArea.innerHTML = `
             <div class="message-display">
-                <p>"${newMessage}"</p>
-                <small>~ Your Beloved Gardener</small>
+                <p>"Your beautiful message has been saved!"</p>
+                <small>Ready for your beloved to read 💖</small>
             </div>
         `;
-    }, 1500);
+    }, 2000);
 }
 
 // Show temporary message
@@ -253,7 +260,6 @@ function startMessageRefresh() {
 
 // Initialize the app
 function init() {
-    setupFlowerControls();
     createFloatingFlowers();
     createFloatingLeaves();
     checkExistingLogin();
